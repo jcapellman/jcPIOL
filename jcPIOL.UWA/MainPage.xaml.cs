@@ -33,7 +33,7 @@ namespace jcPIOL.UWA
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             var result = await viewModel.LoadNews();
-
+            
             base.OnNavigatedTo(e);
         }
     }

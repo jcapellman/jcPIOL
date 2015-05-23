@@ -20,7 +20,7 @@ namespace jcPIOL.UWA.ViewModel {
         }
 
         public async Task<bool> LoadNews() {
-            var response = await App.DataManager.AddRequest<List<NewsResponseItem>>(jcPIOLRequestType.GET, "News", null);
+            var response = await App.DataManager.AddRequest<List<NewsResponseItem>>(jcPIOLRequestType.GET, "news", null);
 
             if (response.JCPIOL_Status != jcPIOLDataStatus.DATA_RETRIEVED) {
                 return false;

@@ -1,20 +1,52 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.NetworkInformation;
+using System.Threading.Tasks;
 
+using jcPIOL.PCL.Enums;
 using jcPIOL.PCL.Transports;
 
 namespace jcPIOL.PCL {
     public class jcPIOLManager {
-        private Dictionary<Guid, Object> _storage;
+        private readonly List<object> _storage;
 
-        public jcPIOLManager() {
-            _storage = new Dictionary<Guid, object>();
+        private readonly jcPIOLBaseWebAPIHandler _webAPIHandler;
+
+        public jcPIOLManager(string webAPIURL) {
+            _storage = new List<object>();
+
+            _webAPIHandler = new jcPIOLBaseWebAPIHandler(webAPIURL);
         }
 
-        public jcPIOLResponseItem AddRequest(Object obj) {
-            _storage.Add(Guid.NewGuid(), obj);
+        public async Task<jcPIOLResponseItem<T>> AddRequest<T>(jcPIOLRequestType requestType, string urlRequest, Object obj) {
+            var responseItem = new jcPIOLResponseItem<T> {
+                JCPIOL_Status = jcPIOLDataStatus.REQUEST_FOR_DATA,
+                JCPIOL_TransactionGUID = Guid.NewGuid()
+            };
 
-            return new jcPIOLResponseItem();
+            if (!NetworkInterface.GetIsNetworkAvailable()) {
+                // Record Request
+            } else {
+                switch (requestType) {
+                    case jcPIOLRequestType.GET:
+                        var response = await _webAPIHandler.Get<T>(urlRequest);
+
+                        responseItem.ObjectData = response;
+                        break;
+                    case jcPIOLRequestType.DELETE:
+                        var deleteResponse = await _webAPIHandler.Delete(urlRequest);
+
+                        if (deleteResponse) {
+                            responseItem.JCPIOL_Status = jcPIOLDataStatus.FAILED_REQUEST;
+                        }
+
+                        break;
+                }
+
+                _storage.Add(responseItem);
+            }
+
+            return responseItem;
         }
     }
 }

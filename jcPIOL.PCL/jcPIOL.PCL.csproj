@@ -39,6 +39,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Enums\jcPIOLDataStatus.cs" />
+    <Compile Include="Enums\jcPIOLRequestType.cs" />
     <Compile Include="jcPIOLBaseWebAPIHandler.cs" />
     <Compile Include="jcPIOLManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

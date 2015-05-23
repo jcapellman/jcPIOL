@@ -32,6 +32,8 @@ namespace jcPIOL.PCL {
                         var response = await _webAPIHandler.Get<T>(urlRequest);
 
                         responseItem.ObjectData = response;
+                        responseItem.JCPIOL_Status = jcPIOLDataStatus.DATA_RETRIEVED;
+                        
                         break;
                     case jcPIOLRequestType.DELETE:
                         var deleteResponse = await _webAPIHandler.Delete(urlRequest);

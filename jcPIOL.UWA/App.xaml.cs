@@ -14,6 +14,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using jcPIOL.PCL;
 
 // The Blank Application template is documented at http://go.microsoft.com/fwlink/?LinkId=402347&clcid=0x409
 
@@ -22,7 +23,10 @@ namespace jcPIOL.UWA
     /// <summary>
     /// Provides application-specific behavior to supplement the default Application class.
     /// </summary>
-    sealed partial class App : Application {
+    sealed partial class App : Application
+    {
+        public static jcPIOLManager DataManager;
+
         /// <summary>
         /// Allows tracking page views, exceptions and other telemetry through the Microsoft Application Insights service.
         /// </summary>
@@ -34,6 +38,8 @@ namespace jcPIOL.UWA
         /// </summary>
         public App()
         {
+            DataManager = new jcPIOLManager(Common.Constants.WEBAPIADDRESS);
+
             TelemetryClient = new Microsoft.ApplicationInsights.TelemetryClient();
 
             this.InitializeComponent();

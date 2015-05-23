@@ -12,6 +12,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using jcPIOL.UWA.ViewModel;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -20,11 +21,20 @@ namespace jcPIOL.UWA
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class MainPage : Page
-    {
-        public MainPage()
-        {
+    public sealed partial class MainPage : Page {
+        private MainPageModel viewModel => (MainPageModel) DataContext;
+
+        public MainPage() {
             this.InitializeComponent();
+
+            DataContext = new MainPageModel();
+        }
+
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
+        {
+            var result = await viewModel.LoadNews();
+
+            base.OnNavigatedTo(e);
         }
     }
 }
